@@ -78,15 +78,26 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="form-grid-2">
-              <div class="form-group">
-                <label for="budget-checkin">Data de Check-in:</label>
-                <input type="date" id="budget-checkin" class="form-control" required />
+            <div class="date-range-picker-container" id="budget-date-range-container">
+              <div class="date-range-trigger-row">
+                <div class="date-trigger-group">
+                  <label id="lbl-budget-checkin">Data de Check-in:</label>
+                  <button type="button" class="date-trigger-btn" id="btn-budget-checkin" aria-labelledby="lbl-budget-checkin">
+                    <span class="date-icon">📅</span>
+                    <span class="date-text" id="text-budget-checkin">--/-- (---)</span>
+                  </button>
+                </div>
+                <div class="date-range-arrow" aria-hidden="true">➔</div>
+                <div class="date-trigger-group">
+                  <label id="lbl-budget-checkout">Data de Check-out:</label>
+                  <button type="button" class="date-trigger-btn" id="btn-budget-checkout" aria-labelledby="lbl-budget-checkout">
+                    <span class="date-icon">📅</span>
+                    <span class="date-text" id="text-budget-checkout">--/-- (---)</span>
+                  </button>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="budget-checkout">Data de Check-out:</label>
-                <input type="date" id="budget-checkout" class="form-control" required />
-              </div>
+              <input type="hidden" id="budget-checkin" name="budget-checkin" />
+              <input type="hidden" id="budget-checkout" name="budget-checkout" />
             </div>
 
             <div class="form-grid-2" style="margin-top: 1.1rem;">
@@ -213,10 +224,15 @@
           </div>
           <div class="card-body">
             
-            <div class="form-grid-2">
-              <div class="form-group">
-                <label for="dayuse-date">Data do Day Use:</label>
-                <input type="date" id="dayuse-date" class="form-control" required />
+              <div class="date-range-picker-container" id="dayuse-date-container">
+                <div class="form-group">
+                  <label id="lbl-dayuse-date">Data do Day Use:</label>
+                  <button type="button" class="date-trigger-btn" id="btn-dayuse-date" aria-labelledby="lbl-dayuse-date">
+                    <span class="date-icon">📅</span>
+                    <span class="date-text" id="text-dayuse-date">--/-- (---)</span>
+                  </button>
+                </div>
+                <input type="hidden" id="dayuse-date" name="dayuse-date" />
               </div>
               <div class="form-group">
                 <label>Valor por Pessoa:</label>

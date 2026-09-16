@@ -45,6 +45,18 @@ export function formatMoney(val) {
 }
 
 /**
+ * Converte um objeto Date em string YYYY-MM-DD usando métodos locais (evita drift de fuso horário)
+ * @param {Date} date
+ * @returns {string}
+ */
+export function formatLocalDateISO(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/**
  * Converte data YYYY-MM-DD para DD/MM
  * @param {string} dateStr 
  * @returns {string}

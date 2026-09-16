@@ -1,5 +1,6 @@
 import { CONFIG } from './config.js';
-import { formatMoney, formatDateDDMM, calculateNights, padZero, copyToClipboard } from './utils.js';
+import { formatMoney, formatDateDDMM, calculateNights, padZero, copyToClipboard, formatLocalDateISO } from './utils.js';
+import { DateRangePicker } from './calendar.js';
 
 // Estado global da aplicação
 const state = {
@@ -52,6 +53,9 @@ const DOM = {
   tabContents: document.querySelectorAll('.tab-content-panel'),
   
   // Orçamento Comum
+  budgetDateContainer: document.getElementById('budget-date-range-container'),
+  btnBudgetCheckin: document.getElementById('btn-budget-checkin'),
+  btnBudgetCheckout: document.getElementById('btn-budget-checkout'),
   budgetCheckin: document.getElementById('budget-checkin'),
   budgetCheckout: document.getElementById('budget-checkout'),
   budgetAdults: document.getElementById('budget-adults'),
@@ -83,6 +87,8 @@ const DOM = {
   },
   
   // Aba 3 - Day Use Dados
+  dayuseDateContainer: document.getElementById('dayuse-date-container'),
+  btnDayuseDate: document.getElementById('btn-dayuse-date'),
   dayuseDate: document.getElementById('dayuse-date'),
   dayusePriceRadio: document.getElementsByName('dayuse-price'),
   dayuseAdults: document.getElementById('dayuse-adults'),
@@ -107,11 +113,16 @@ const DOM = {
   toastContainer: document.getElementById('toast-container')
 };
 
+// Instâncias do DateRangePicker
+let budgetPicker = null;
+let dayusePicker = null;
+
 /**
  * Inicialização da aplicação
  */
 export function initApp() {
   setupInitialDates();
+  setupDatePickers();
   setupDatalist();
   setupEventListeners();
   updateBudgetCalculations(true);
@@ -120,27 +131,66 @@ export function initApp() {
 }
 
 /**
- * Define datas iniciais padrão (próximo fim de semana)
+ * Inicializa os pickers de calendário customizados
+ */
+function setupDatePickers() {
+  if (DOM.budgetDateContainer) {
+    budgetPicker = new DateRangePicker({
+      container: DOM.budgetDateContainer,
+      checkinBtn: DOM.btnBudgetCheckin,
+      checkoutBtn: DOM.btnBudgetCheckout,
+      checkinInput: DOM.budgetCheckin,
+      checkoutInput: DOM.budgetCheckout,
+      singleMode: false,
+      allowSameDay: true, // Q2: Opção B (Permitir mesmo dia para Day Use)
+      onSelect: (start, end) => {
+        state.budget.checkin = start;
+        state.budget.checkout = end;
+        updateBudgetCalculations(false);
+        renderPreview();
+      }
+    });
+    budgetPicker.setDates(state.budget.checkin, state.budget.checkout);
+  }
+
+  if (DOM.dayuseDateContainer) {
+    dayusePicker = new DateRangePicker({
+      container: DOM.dayuseDateContainer,
+      singleBtn: DOM.btnDayuseDate,
+      singleInput: DOM.dayuseDate,
+      singleMode: true, // Q5: Opção B (2 meses visíveis com clique único)
+      allowSameDay: true,
+      onSelect: (date) => {
+        state.dayUseData.date = date;
+        renderPreview();
+      }
+    });
+    dayusePicker.setDates(state.dayUseData.date);
+  }
+}
+
+/**
+ * Define datas iniciais padrão da aplicação:
+ * - Check-in: Data de hoje (Today)
+ * - Check-out: Data de amanhã (Today + 1 dia)
+ * - Day Use (Aba 3): Data de hoje (Today)
+ *
+ * Utiliza métodos de data local para evitar desvios de fuso horário (ex: UTC-3).
  */
 function setupInitialDates() {
   const today = new Date();
-  // Check-in no próximo sábado
-  const daysUntilSaturday = (6 - today.getDay() + 7) % 7 || 7;
-  const saturday = new Date(today);
-  saturday.setDate(today.getDate() + daysUntilSaturday);
-  
-  const sunday = new Date(saturday);
-  sunday.setDate(saturday.getDate() + 1);
-  
-  const formatISO = (d) => d.toISOString().split('T')[0];
+  const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
-  state.budget.checkin = formatISO(saturday);
-  state.budget.checkout = formatISO(sunday);
-  state.dayUseData.date = formatISO(saturday);
+  state.budget.checkin = formatLocalDateISO(today);
+  state.budget.checkout = formatLocalDateISO(tomorrow);
+  state.dayUseData.date = formatLocalDateISO(today);
 
   if (DOM.budgetCheckin) DOM.budgetCheckin.value = state.budget.checkin;
   if (DOM.budgetCheckout) DOM.budgetCheckout.value = state.budget.checkout;
   if (DOM.dayuseDate) DOM.dayuseDate.value = state.dayUseData.date;
+
+  if (budgetPicker) budgetPicker.setDates(state.budget.checkin, state.budget.checkout);
+  if (dayusePicker) dayusePicker.setDates(state.dayUseData.date);
 }
 
 /**
@@ -329,6 +379,10 @@ function setupEventListeners() {
  */
 export function setActiveTab(tabId) {
   state.activeTab = tabId;
+
+  // Fecha calendários abertos ao alternar de aba
+  if (budgetPicker && budgetPicker.isOpen) budgetPicker.close(true);
+  if (dayusePicker && dayusePicker.isOpen) dayusePicker.close(true);
 
   DOM.tabButtons.forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tab === tabId);

@@ -476,10 +476,19 @@ function updateBudgetCalculations(forceAutoFill = false) {
 
     // Alerta de Limite de Ocupação (Informativo, não bloqueia)
     if (chaleObj && totalGuests > chaleObj.maxCapacity) {
-      warnEl.textContent = `⚠️ Capacidade máx. recomendada: ${chaleObj.maxCapacity} pessoas (Total atual: ${totalGuests})`;
+      warnEl.innerHTML = `
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </span>
+        <span>Capacidade máx. recomendada: ${chaleObj.maxCapacity} pessoas (Total atual: ${totalGuests})</span>
+      `;
       warnEl.classList.add('show');
     } else {
-      warnEl.textContent = '';
+      warnEl.innerHTML = '';
       warnEl.classList.remove('show');
     }
   });
@@ -552,7 +561,7 @@ function renderDayUseChildrenUI() {
       <div class="child-card-header">
         <span class="child-number">Criança #${padZero(index + 1)}</span>
         <span class="child-status-badge ${child.isExempt ? 'badge-exempt' : 'badge-paying'}">
-          ${child.isExempt ? '🎉 Não pagante (Isenta)' : '💳 Pagante'}
+          ${child.isExempt ? 'Isenta (Não pagante)' : 'Pagante'}
         </span>
       </div>
       <div class="child-card-body">
@@ -742,10 +751,25 @@ async function handleCopyMessage() {
   if (success) {
     showToast('Mensagem copiada com sucesso para o WhatsApp!', 'success');
     DOM.copyBtn.classList.add('copied');
-    DOM.copyBtn.innerHTML = `<span>✓</span> Copiado!`;
+    DOM.copyBtn.innerHTML = `
+      <span class="icon">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </span>
+      <span>Copiado!</span>
+    `;
     setTimeout(() => {
       DOM.copyBtn.classList.remove('copied');
-      DOM.copyBtn.innerHTML = `<span>📋</span> Copiar Mensagem`;
+      DOM.copyBtn.innerHTML = `
+        <span class="icon" id="btn-copy-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </span>
+        <span id="btn-copy-text">Copiar Mensagem</span>
+      `;
     }, 2000);
   } else {
     showToast('Não foi possível copiar automaticamente. Selecione o texto e copie manualmente.', 'error');

@@ -147,6 +147,7 @@ body {
   justify-content: center;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+  flex-shrink: 0;
 }
 
 .brand-icon .icon,
@@ -157,10 +158,22 @@ body {
   stroke-width: 2;
 }
 
+.brand-info {
+  min-width: 0;
+}
+
 .brand-info h1 {
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+.header-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
 }
 
 .client-badge {
@@ -177,6 +190,73 @@ body {
   height: 6px;
   background-color: var(--color-primary-light);
   border-radius: 50%;
+}
+
+.profile-switcher-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-switcher-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.profile-switcher-label .icon {
+  font-size: 0.95em;
+}
+
+#profile-switcher-select,
+.profile-switcher-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md, 8px);
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 32px 6px 12px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px 14px;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+#profile-switcher-select:hover,
+.profile-switcher-select:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+#profile-switcher-select:focus,
+.profile-switcher-select:focus,
+#profile-switcher-select:focus-visible,
+.profile-switcher-select:focus-visible {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+}
+
+#profile-switcher-select option,
+.profile-switcher-select option {
+  background-color: #1e293b;
+  color: #ffffff;
+  font-size: 0.85rem;
+  padding: 8px 12px;
 }
 
 /* Navigation Tabs */
@@ -383,6 +463,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.chale-list.is-switching {
+  opacity: 0;
 }
 
 .chale-item-card {
@@ -476,6 +561,11 @@ body {
   font-weight: 700;
   font-size: 1.05rem;
   color: #0f172a;
+}
+
+.price-input-wrapper input::placeholder {
+  color: #cbd5e1;
+  font-weight: 500;
 }
 
 .price-input-wrapper input.blocked-by-policy {
@@ -1394,6 +1484,25 @@ body {
   .app-header {
     padding: 1rem;
   }
+  .header-meta-row {
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .brand-info h1 {
+    font-size: 1.05rem;
+    line-height: 1.25;
+  }
+  .profile-switcher-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+  #profile-switcher-select,
+  .profile-switcher-select {
+    width: auto;
+    max-width: 100%;
+    font-size: 0.82rem;
+  }
   .tabs-navigation {
     width: 100%;
     overflow-x: auto;
@@ -1415,3 +1524,37 @@ body {
     margin: 1rem auto;
   }
 }
+
+@media (max-width: 400px) {
+  .app-header {
+    padding: 0.75rem 0.85rem;
+  }
+  .brand-wrapper {
+    gap: 0.65rem;
+  }
+  .brand-icon {
+    width: 38px;
+    height: 38px;
+  }
+  .brand-icon .icon,
+  .brand-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .brand-info h1 {
+    font-size: 0.95rem;
+  }
+  .profile-switcher-label {
+    display: none;
+  }
+  #profile-switcher-select,
+  .profile-switcher-select {
+    font-size: 0.8rem;
+    padding: 5px 28px 5px 10px;
+    max-width: 210px;
+  }
+  .client-badge {
+    font-size: 0.72rem;
+  }
+}
+

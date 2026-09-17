@@ -1,5 +1,5 @@
 /**
- * DateRangePicker — Custom Dual-Month Date Range Picker
+ * StayMessage Engine — DateRangePicker Module
  *
  * Desktop-optimized calendar component:
  * - Dual-month side-by-side view (Airbnb-style)

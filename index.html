@@ -45,9 +45,26 @@
         </div>
         <div class="brand-info">
           <h1>Gerador de Orçamentos WhatsApp</h1>
-          <div class="client-badge">
-            <span class="dot"></span>
-            <span id="client-name">Chalés Senhor dos Trilhos</span>
+          <div class="header-meta-row">
+            <div class="client-badge">
+              <span class="dot"></span>
+              <span id="client-name">Chalés Senhor dos Trilhos</span>
+            </div>
+            <div class="profile-switcher-wrapper">
+              <label for="profile-switcher-select" class="profile-switcher-label">
+                <span class="icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                    <path d="M3 21h18" />
+                    <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+                  </svg>
+                </span>
+                <span>Perfil:</span>
+              </label>
+              <select id="profile-switcher-select" class="profile-switcher-select" aria-label="Selecione o Estabelecimento">
+                <option value="senhor_dos_trilhos">Chalés Senhor dos Trilhos</option>
+                <option value="vila_verde">Pousada Vila Verde (Demo)</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -208,80 +225,8 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="chale-list">
-
-              <!-- Chalé 1: Vista do lago -->
-              <div class="chale-item-card" id="wrapper-vista-lago">
-                <div class="chale-card-top">
-                  <div class="chale-header-info">
-                    <h4>
-                      Vista do lago
-                      <span class="chale-badge-cat cat-hydro">Hidro maior</span>
-                    </h4>
-                    <p class="chale-subinfo">Capacidade máxima: 2 pessoas</p>
-                  </div>
-                </div>
-                <div class="chale-controls-grid">
-                  <div class="price-input-wrapper">
-                    <span class="price-currency-prefix">R$</span>
-                    <input type="text" id="val-vista-lago" list="datalist-valores" placeholder="850,00" class="form-control" />
-                  </div>
-                  <label class="checkbox-toggle-container" for="unavail-vista-lago">
-                    <input type="checkbox" id="unavail-vista-lago" />
-                    <span>Indisponível</span>
-                  </label>
-                </div>
-                <div class="chale-warning-msg" id="warn-vista-lago"></div>
-              </div>
-
-              <!-- Chalé 2: Hortênsia -->
-              <div class="chale-item-card" id="wrapper-hortensia">
-                <div class="chale-card-top">
-                  <div class="chale-header-info">
-                    <h4>
-                      Hortênsia
-                      <span class="chale-badge-cat cat-hydro">Hidro menor</span>
-                    </h4>
-                    <p class="chale-subinfo">Capacidade máxima: 2 pessoas</p>
-                  </div>
-                </div>
-                <div class="chale-controls-grid">
-                  <div class="price-input-wrapper">
-                    <span class="price-currency-prefix">R$</span>
-                    <input type="text" id="val-hortensia" list="datalist-valores" placeholder="750,00" class="form-control" />
-                  </div>
-                  <label class="checkbox-toggle-container" for="unavail-hortensia">
-                    <input type="checkbox" id="unavail-hortensia" />
-                    <span>Indisponível</span>
-                  </label>
-                </div>
-                <div class="chale-warning-msg" id="warn-hortensia"></div>
-              </div>
-
-              <!-- Chalé 3: Sem hidro -->
-              <div class="chale-item-card" id="wrapper-sem-hidro">
-                <div class="chale-card-top">
-                  <div class="chale-header-info">
-                    <h4>
-                      Chalés sem hidro
-                      <span class="chale-badge-cat cat-no-hydro">Padrão</span>
-                    </h4>
-                    <p class="chale-subinfo">Capacidade máxima: 4 pessoas (3 a 4 hóspedes)</p>
-                  </div>
-                </div>
-                <div class="chale-controls-grid">
-                  <div class="price-input-wrapper">
-                    <span class="price-currency-prefix">R$</span>
-                    <input type="text" id="val-sem-hidro" list="datalist-valores" placeholder="490,00" class="form-control" />
-                  </div>
-                  <label class="checkbox-toggle-container" for="unavail-sem-hidro">
-                    <input type="checkbox" id="unavail-sem-hidro" />
-                    <span>Indisponível</span>
-                  </label>
-                </div>
-                <div class="chale-warning-msg" id="warn-sem-hidro"></div>
-              </div>
-
+            <div id="accommodations-container" class="chale-list">
+              <!-- Dynamically rendered by StayMessage Engine from active profile -->
             </div>
           </div>
         </div>
@@ -327,18 +272,10 @@
               </div>
               <div class="form-group">
                 <label>Valor por Pessoa:</label>
-                <div class="radio-price-group">
-                  <label class="radio-price-card">
-                    <input type="radio" name="dayuse-price" value="65" checked />
-                    <span>R$ 65,00</span>
-                  </label>
-                  <label class="radio-price-card">
-                    <input type="radio" name="dayuse-price" value="80" />
-                    <span>R$ 80,00</span>
-                  </label>
+                <div class="radio-price-group" id="dayuse-price-options-container">
+                  <!-- Renderizado dinamicamente via profile.dayUse.priceOptions -->
                 </div>
               </div>
-            </div>
 
             <div class="form-grid-2" style="margin-top: 1.1rem;">
               <div class="form-group">
@@ -478,7 +415,7 @@
   <!-- Container de Toasts -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Script da Aplicação -->
-  <script type="module" src="./js/app.js"></script>
+  <!-- Script da Aplicação: StayMessage Engine -->
+  <script type="module" src="./js/engine/app.js"></script>
 </body>
 </html>
